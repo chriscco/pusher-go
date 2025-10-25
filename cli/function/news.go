@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"pusherGo/domain"
@@ -14,7 +15,6 @@ import (
 func getNews(request *domain.NewsRequest) (*domain.News, error) {
 	var news = &domain.News{}
 	news.Category = request.Category
-	news.Country = request.Country
 
 	if global.Configs == nil {
 		return nil, fmt.Errorf("configs not initialized")
@@ -22,12 +22,16 @@ func getNews(request *domain.NewsRequest) (*domain.News, error) {
 
 	params := url.Values{}
 	params.Add("category", string(request.Category))
-	params.Add("lang", string(request.Lang))
 	params.Add("country", string(request.Country))
 	params.Add("max", strconv.Itoa(request.Max))
 	params.Add("apikey", global.Configs.GNews.ApiKey)
+	if request.Lang != "" {
+		params.Add("lang", string(request.Lang))
+	}
 
 	reqURL := global.Configs.GNews.Endpoint + params.Encode()
+
+	log.Printf("Request gnews: %v\n", reqURL)
 
 	resp, err := http.Get(reqURL)
 	if err != nil {
@@ -48,18 +52,26 @@ func getNews(request *domain.NewsRequest) (*domain.News, error) {
 
 func GetNews() (*domain.NewsResponse, error) {
 	var resp = &domain.NewsResponse{}
-	resp.News = make([]*domain.News, 0)
+	resp.News = []*domain.News{}
 
 	for _, category := range domain.Categories {
 		for _, country := range domain.Countries {
-			news, err := getNews(&domain.NewsRequest{
+			var req = &domain.NewsRequest{
 				Category: category,
 				Country:  country,
-				Max:      10,
-				Lang:     domain.En,
-			})
+				Max:      global.Configs.GNews.MaxResults,
+			}
+			if country == domain.Us {
+				req.Lang = domain.En
+			}
+			news, err := getNews(req)
 			if err != nil {
 				return nil, err
+			}
+
+			log.Printf("Received news: %v\n", news)
+			if len(news.Articles) == 0 {
+				continue
 			}
 
 			resp.News = append(resp.News, news)
@@ -67,4 +79,12 @@ func GetNews() (*domain.NewsResponse, error) {
 	}
 
 	return resp, nil
+}
+
+func FormatNews(news *domain.NewsResponse) (string, error) {
+	data, err := json.MarshalIndent(news.News, "", "  ")
+	if err != nil {
+		return "", err
+	}
+	return string(data), nil
 }

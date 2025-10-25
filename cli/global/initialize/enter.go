@@ -7,6 +7,6 @@ import (
 
 func GlobalInit() error {
 	var err error
-	global.Configs, err = config.LoadConfig("config_local.yaml")
+	global.Configs, err = config.LoadConfig("./config/config.local.yaml")
 	return err
 }

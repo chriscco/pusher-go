@@ -1,13 +1,20 @@
 package function
 
 import (
+	"bytes"
 	"pusherGo/domain"
 	"pusherGo/global"
+	"time"
 
+	"github.com/yuin/goldmark"
 	"gopkg.in/gomail.v2"
 )
 
 func sendEmail(request *domain.EmailRequest) error {
+	var htmlBuf bytes.Buffer
+	if err := goldmark.Convert([]byte(request.Body), &htmlBuf); err != nil {
+		return err
+	}
 	mailHeader := map[string][]string{
 		"From":    {request.From},
 		"To":      request.To,
@@ -15,9 +22,9 @@ func sendEmail(request *domain.EmailRequest) error {
 	}
 	m := gomail.NewMessage()
 	m.SetHeaders(mailHeader)
-	m.SetBody("text/html", request.Body)
+	m.SetBody("text/html", htmlBuf.String())
 
-	d := gomail.NewDialer("smtp.gmail.com", 587, request.From, request.Password)
+	d := gomail.NewDialer("smtp.qq.com", 587, request.From, request.Password)
 	err := d.DialAndSend(m)
 	if err != nil {
 		return err
@@ -30,7 +37,7 @@ func SendEmail(text string) {
 		From:     global.Configs.Email.From,
 		Password: global.Configs.Email.Password,
 		To:       global.Configs.Email.To,
-		Subject:  global.Configs.Email.Subject,
+		Subject:  global.Configs.Email.Subject + time.Now().Format("2006-01-02"),
 		Body:     text,
 	}
 	err := sendEmail(request)

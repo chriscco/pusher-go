@@ -16,6 +16,12 @@ type Email struct {
 	Password string   `mapstructure:"password"`
 }
 
+type File struct {
+	FileNameNews          string `mapstructure:"file_name_news"`
+	FileNameStock         string `mapstructure:"file_name_stock"`
+	FileNameModelResponse string `mapstructure:"file_name_model_response"`
+}
+
 type GNews struct {
 	ApiKey     string   `mapstructure:"api_key"`
 	Endpoint   string   `mapstructure:"endpoint"`
@@ -29,6 +35,7 @@ type Config struct {
 	Model Model `mapstructure:"model"`
 	Email Email `mapstructure:"email"`
 	GNews GNews `mapstructure:"g_news"`
+	File  File  `mapstructure:"file"`
 }
 
 func LoadConfig(filename string) (*Config, error) {
