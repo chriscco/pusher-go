@@ -9,7 +9,9 @@ Pusher-Go 目前支持的新闻和股市API:
 ## Configuration 
 在```pusher-go/cli/config```中创建一个配置文件```config.local.yaml```, 如下: 
 
+> [!IMPORTANT]
 > 为了能正常发送邮件, 需要发送方开通 SMTP 功能
+
 ```yaml
 model: 
   api_key: "sk-xxx"
@@ -54,4 +56,5 @@ crontab -e
 # 在洛杉矶时间晚上 7 点运行脚本
 0 19 * * * TZ="America/Los_Angeles" /home/ubuntu/pusher/script.sh >> /tmp/cron_debug.log 2>&1
 ```
+> [!IMPORTANT]
 > 如果需要修改脚本或代码, 确保不要出现相对路径
