@@ -2,6 +2,10 @@
 
 Pusher-Go 可以定时自动拉取当日的新闻和股市数据，并通过调用大模型服务对当日的信息进行总结，并发送至用户邮箱
 
+Pusher-Go 目前支持的新闻和股市API: 
+
+- [GNews](https://gnews.io)
+- [Tushare](https://tushare.pro) **TODO**
 ## Configuration 
 在```pusher-go/cli/config```中创建一个配置文件```config.local.yaml```, 如下: 
 
