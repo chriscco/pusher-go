@@ -37,7 +37,7 @@ func SendEmail(text string) {
 		From:     global.Configs.Email.From,
 		Password: global.Configs.Email.Password,
 		To:       global.Configs.Email.To,
-		Subject:  global.Configs.Email.Subject + time.Now().Format("2006-01-02"),
+		Subject:  global.Configs.Email.Subject + time.Now().Format("2006-01-02 15:04"),
 		Body:     text,
 	}
 	err := sendEmail(request)
