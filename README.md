@@ -45,6 +45,8 @@ chmod +x script.sh
 ```
 通过 crontab 或是其他方式将脚本加入系统的定时任务中, 如： 
 ```bash
+crontab -e
+# 将下面的代码加入 crontab 的脚本文件中
 # 在洛杉矶时间晚上 9 点运行脚本
 0 19 * * * TZ="America/Los_Angeles" /home/ubuntu/pusher/script.sh >> /tmp/cron_debug.log 2>&1
 ```
