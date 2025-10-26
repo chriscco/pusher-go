@@ -10,6 +10,7 @@ import (
 	"pusherGo/domain"
 	"pusherGo/global"
 	"strconv"
+	"time"
 )
 
 func getNews(request *domain.NewsRequest) (*domain.News, error) {
@@ -25,9 +26,6 @@ func getNews(request *domain.NewsRequest) (*domain.News, error) {
 	params.Add("country", string(request.Country))
 	params.Add("max", strconv.Itoa(request.Max))
 	params.Add("apikey", global.Configs.GNews.ApiKey)
-	if request.Lang != "" {
-		params.Add("lang", string(request.Lang))
-	}
 
 	reqURL := global.Configs.GNews.Endpoint + params.Encode()
 
@@ -76,6 +74,7 @@ func GetNews() (*domain.NewsResponse, error) {
 
 			resp.News = append(resp.News, news)
 		}
+		time.Sleep(time.Second * 5)
 	}
 
 	return resp, nil

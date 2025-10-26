@@ -8,6 +8,7 @@ const (
 	Technology Category = "technology"
 	Business   Category = "business"
 	World      Category = "world"
+	Nation     Category = "nation"
 )
 
 const (
@@ -21,15 +22,9 @@ const (
 	Hk Country = "hk"
 )
 
-type Source struct {
-	Country Country `json:"country"`
-}
-
 type Articles struct {
-	Source      Source `json:"source"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
-	Lang        Lang   `json:"lang"`
 	Url         string `json:"url"`
 }
 
@@ -39,9 +34,9 @@ type News struct {
 }
 
 var (
-	Categories = []Category{Technology, Business}
+	Categories = []Category{Business, Technology}
 	Langs      = []Lang{En, Zh}
-	Countries  = []Country{Cn, Us, Hk}
+	Countries  = []Country{Cn, Us}
 )
 
 type NewsRequest struct {
