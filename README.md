@@ -47,7 +47,7 @@ chmod +x script.sh
 ```bash
 crontab -e
 # 将下面的代码加入 crontab 的脚本文件中
-# 在洛杉矶时间晚上 9 点运行脚本
+# 在洛杉矶时间晚上 7 点运行脚本
 0 19 * * * TZ="America/Los_Angeles" /home/ubuntu/pusher/script.sh >> /tmp/cron_debug.log 2>&1
 ```
 > 如果需要修改脚本或代码, 确保不要出现相对路径
