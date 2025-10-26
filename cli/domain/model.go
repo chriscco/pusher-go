@@ -22,6 +22,7 @@ type Choice struct {
 }
 
 type ModelResponse struct {
-	Answer  string   `json:"answer"`
-	Choices []Choice `json:"choices"`
+	Answer  string         `json:"answer"`
+	Choices []Choice       `json:"choices"`
+	Error   map[string]any `json:"error"`
 }

@@ -73,8 +73,12 @@ func CallModel(request *domain.ModelCallRequest) (*domain.ModelResponse, error) 
 		return nil, err
 	}
 
-	if len(chatResp.Choices) == 0 {
-		return nil, fmt.Errorf("no response from model")
+	if len(chatResp.Choices) == 0 && chatResp.Error != nil {
+		errMsg, err := json.MarshalIndent(chatResp.Error, "", " ")
+		if err != nil {
+			return nil, err
+		}
+		return nil, fmt.Errorf("no response from model: %v", errMsg)
 	}
 
 	return &domain.ModelResponse{
